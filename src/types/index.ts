@@ -90,5 +90,7 @@ export interface TripListItem {
   price: number;
   imageUrl: string;
   featured: boolean;
+  minPax: number;
+  maxPax: number;
   translations: TripTranslationData[];
 }

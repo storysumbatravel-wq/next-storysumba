@@ -235,4 +235,9 @@ export const translations = {
   },
 } as const;
 
-export type TranslationKey = typeof translations.en;
+// Membuat tipe yang hanya mengecek struktur/shape, bukan literal string value-nya
+type DeepStringify<T> = {
+  readonly [K in keyof T]: T[K] extends string ? string : DeepStringify<T[K]>;
+};
+
+export type TranslationKey = DeepStringify<typeof translations.en>;
