@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
+// GET /api/trips — Mendapatkan semua trip
 export async function GET() {
   try {
     const trips = await prisma.trip.findMany({
@@ -11,17 +12,11 @@ export async function GET() {
           orderBy: { dayNumber: "asc" },
           include: {
             translations: true,
-            destinations: {
-              orderBy: { order: "asc" },
-            },
+            destinations: { orderBy: { order: "asc" } },
           },
         },
-        flights: {
-          orderBy: { order: "asc" },
-        },
-        hotels: {
-          orderBy: { checkInDay: "asc" },
-        },
+        flights: { orderBy: { order: "asc" } },
+        hotels: { orderBy: { checkInDay: "asc" } },
         includes: true,
         excludes: true,
         tips: true,
@@ -29,16 +24,10 @@ export async function GET() {
     });
 
     return NextResponse.json(trips);
-  } catch (error: any) {
-    console.error(error);
-
+  } catch (error) {
+    console.error("Error fetching trips:", error);
     return NextResponse.json(
-      {
-        message: error.message,
-        code: error.code,
-        name: error.name,
-        stack: error.stack,
-      },
+      { error: "Failed to fetch trips" },
       { status: 500 },
     );
   }
